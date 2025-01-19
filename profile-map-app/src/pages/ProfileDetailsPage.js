@@ -1,14 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom"; // Import Link for navigation
-import { profiles } from "../mockData/profiles"; // Import profiles data
-
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import profiles from "../mockData/profiles.json";
+import MapComponent from "../components/MapComponent"; 
 const ProfileDetailsPage = () => {
+  const [selectedProfile, setSelectedProfile] = useState(null);
+
+  const handleProfileClick = (profile) => {
+    setSelectedProfile(profile);
+  };
+
   return (
     <div style={{ textAlign: "center", padding: "2rem" }}>
       <h1>Profile Details</h1>
-      <p>View detailed information about individual profiles below.</p>
+      <p>detailed information about individual profiles below.</p>
 
-      {/* Back to Home Button */}
+      
       <div style={{ marginBottom: "2rem" }}>
         <Link to="/">
           <button
@@ -26,6 +32,7 @@ const ProfileDetailsPage = () => {
         </Link>
       </div>
 
+      
       <div
         style={{
           display: "flex",
@@ -45,6 +52,16 @@ const ProfileDetailsPage = () => {
               width: "250px",
               textAlign: "center",
               boxShadow: "0px 2px 4px rgba(0,0,0,0.1)",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+            }}
+            onClick={() => handleProfileClick(profile)}
+            onMouseEnter={(e) => {
+              e.target.style.transform = "scale(1.05)";
+              e.target.style.boxShadow = "0px 4px 8px rgba(0,0,0,0.2)";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = "scale(1)";
+              e.target.style.boxShadow = "0px 2px 4px rgba(0,0,0,0.1)";
             }}
           >
             <img
@@ -70,6 +87,44 @@ const ProfileDetailsPage = () => {
           </div>
         ))}
       </div>
+
+      
+      {selectedProfile && (
+        <div
+          style={{
+            marginTop: "2rem",
+            padding: "2rem",
+            border: "1px solid #ccc",
+            borderRadius: "8px",
+            backgroundColor: "#f9f9f9",
+            boxShadow: "0px 2px 4px rgba(0,0,0,0.1)",
+          }}
+        >
+          <h2>{selectedProfile.name}</h2>
+          <p>{selectedProfile.description}</p>
+          <div style={{ marginBottom: "1rem" }}>
+            <h4>Location:</h4>
+            <MapComponent
+              latitude={selectedProfile.address.lat}
+              longitude={selectedProfile.address.lng}
+            />
+          </div>
+
+          <button
+            style={{
+              padding: "0.5rem 1rem",
+              backgroundColor: "#f44336",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+            onClick={() => setSelectedProfile(null)}
+          >
+            Close Details
+          </button>
+        </div>
+      )}
     </div>
   );
 };

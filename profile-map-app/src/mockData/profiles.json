@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "name": "Sam Singh",
+    "description": "Software Developer",
+    "address": {
+      "lat": 18.5204,
+      "lng": 73.8567,
+      "line": "Pune"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Jane Smith",
+    "description": "Graphic Designer",
+    "address": {
+      "lat": 18.5642,
+      "lng": 73.7769,
+      "line": "Baner, Pune"
+    }
+  },
+  {
+    "id": 3,
+    "name": "Tushar Jane",
+    "description": "Web Developer",
+    "address": {
+      "lat": 18.5868,
+      "lng": 73.6860,
+      "line": "Hinjewadi Phase 3"
+    }
+  },
+  {
+    "id": 4,
+    "name": "Sam Brown",
+    "description": "Data Scientist",
+    "address": {
+      "lat": 28.7041,
+      "lng": 77.1025,
+      "line": "Delhi"
+    }
+  },
+  {
+    "id": 5,
+    "name": "Charlie Jane",
+    "description": "UX/UI Designer",
+    "address": {
+      "lat": 19.0760,
+      "lng": 72.8777,
+      "line": "Mumbai"
+    }
+  }
+]

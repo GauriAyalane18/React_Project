@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Import Link
+import { Link } from "react-router-dom"; 
 import "../styles/styles.css";
 
 import ProfileCard from "../components/ProfileCard";
 import MapComponent from "../components/MapComponent";
-import { profiles } from "../mockData/profiles";
+import profiles from "../mockData/profiles.json";
+
 
 const HomePage = () => {
   const [selectedProfile, setSelectedProfile] = useState(null);
@@ -22,7 +23,7 @@ const HomePage = () => {
     profile.name.toLowerCase().includes(searchQuery)
   );
 
-  // Check if any profile matches the search query
+  
   const noResults = filteredProfiles.length === 0 && searchQuery.length > 0;
 
   return (
@@ -75,7 +76,7 @@ const HomePage = () => {
         </ul>
       </nav>
 
-      {/* Search Bar */}
+      
       <div style={{ marginBottom: "1rem", textAlign: "center" }}>
         <input
           type="text"
@@ -92,14 +93,14 @@ const HomePage = () => {
         />
       </div>
 
-      {/* Conditional Rendering for No Search Result */}
+      
       {noResults && (
         <div style={{ textAlign: "center", color: "red" }}>
           <h3>No profiles found matching "{searchQuery}"</h3>
         </div>
       )}
 
-      {/* Profile Cards */}
+      
       <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
         {filteredProfiles.map((profile) => (
           <ProfileCard
@@ -110,7 +111,7 @@ const HomePage = () => {
         ))}
       </div>
 
-      {/* Map Component */}
+      
       {selectedProfile && (
         <>
           <h3>Location for {selectedProfile.name}</h3>

@@ -7,40 +7,70 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const profilesFilePath = path.join(__dirname, "src/mockData/profiles.js");
+const profilesFilePath = path.join(__dirname, "src/mockData/profiles.json");
 
-// Endpoint to fetch profiles
-app.get("/api/profiles", (req, res) => {
-  fs.readFile(profilesFilePath, "utf8", (err, data) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to read profiles data." });
-    }
-    const profiles = eval(data.match(/(?<=export const profiles = ).+/)[0]); // Extract array from file
-    res.json(profiles);
-  });
-});
 
-// Endpoint to add a new profile
-app.post("/api/profiles", (req, res) => {
-  const newProfile = req.body;
-  fs.readFile(profilesFilePath, "utf8", (err, data) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to read profiles data." });
-    }
-    const profiles = eval(data.match(/(?<=export const profiles = ).+/)[0]);
-    profiles.push(newProfile);
-
-    const updatedData = `export const profiles = ${JSON.stringify(profiles, null, 2)};`;
-    fs.writeFile(profilesFilePath, updatedData, "utf8", (err) => {
+function loadProfiles() {
+  return new Promise((resolve, reject) => {
+    fs.readFile(profilesFilePath, "utf8", (err, data) => {
       if (err) {
-        return res.status(500).json({ error: "Failed to save profile." });
+        return reject("Failed to read profiles data.");
       }
-      res.status(201).json(newProfile);
+      try {
+        const profiles = JSON.parse(data); 
+        resolve(profiles);
+      } catch (parseErr) {
+        reject("Failed to parse profiles data.");
+      }
     });
   });
+}
+
+
+function saveProfiles(profiles) {
+  return new Promise((resolve, reject) => {
+    const updatedData = JSON.stringify(profiles, null, 2); 
+    fs.writeFile(profilesFilePath, updatedData, "utf8", (err) => {
+      if (err) {
+        return reject("Failed to save profiles data.");
+      }
+      resolve();
+    });
+  });
+}
+
+
+app.get("/api/profiles", async (req, res) => {
+  try {
+    const profiles = await loadProfiles();
+    res.json(profiles);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
 });
 
-// Start the server
+
+app.post("/api/profiles", async (req, res) => {
+  const newProfile = req.body;
+
+ 
+  if (!newProfile.name || !newProfile.image || !newProfile.description) {
+    return res.status(400).json({ error: "Missing required profile fields." });
+  }
+
+  try {
+    const profiles = await loadProfiles();
+    newProfile.id = Date.now(); 
+    profiles.push(newProfile);
+
+    await saveProfiles(profiles);
+    res.status(201).json(newProfile);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://172.18.16.199:${PORT}`);

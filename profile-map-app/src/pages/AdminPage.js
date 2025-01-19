@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link } from "react-router-dom"; 
 import "../styles/styles.css";
 
 const AdminPage = () => {
@@ -12,11 +12,11 @@ const AdminPage = () => {
   });
   const [successMessage, setSuccessMessage] = useState("");
 
-  // Fetch profiles from the server on component mount
+  
   useEffect(() => {
     const fetchProfiles = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/profiles");
+        const response = await fetch("http://172.18.16.199:5000/api/profiles");
         if (response.ok) {
           const data = await response.json();
           setProfiles(data);
@@ -31,7 +31,7 @@ const AdminPage = () => {
     fetchProfiles();
   }, []);
 
-  // Add new profile
+  
   const addProfile = async () => {
     if (!newProfile.name || !newProfile.photo || !newProfile.description) {
       alert("Please fill all the fields!");
@@ -41,7 +41,7 @@ const AdminPage = () => {
     const profileWithId = { ...newProfile, id: Date.now() };
 
     try {
-      const response = await fetch("http://localhost:5000/api/profiles", {
+      const response = await fetch("http://172.18.16.199:5000/api/profiles", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(profileWithId),
@@ -62,13 +62,13 @@ const AdminPage = () => {
     }
   };
 
-  // Delete profile
+ 
   const deleteProfile = async (id) => {
     if (window.confirm("Are you sure you want to delete this profile?")) {
       setProfiles(profiles.filter((profile) => profile.id !== id));
       setSuccessMessage("Profile deleted successfully!");
       setTimeout(() => setSuccessMessage(""), 3000);
-      // Optionally, you can add an API call here to persist the deletion in the backend.
+      
     }
   };
 
@@ -84,7 +84,7 @@ const AdminPage = () => {
     <div style={{ padding: "2rem" }}>
       <h1 style={{ textAlign: "center", marginBottom: "1rem" }}>Admin Dashboard</h1>
 
-      {/* Success Message */}
+      
       {successMessage && (
         <div
           style={{
@@ -100,7 +100,7 @@ const AdminPage = () => {
         </div>
       )}
 
-      {/* Add Profile Form and Navigation */}
+      
       <div
         style={{
           marginBottom: "2rem",
@@ -173,7 +173,7 @@ const AdminPage = () => {
             Add Profile
           </button>
 
-          {/* Home Page Button */}
+          
           <Link to="/" style={{ textDecoration: "none" }}>
             <button
               style={{
@@ -191,7 +191,7 @@ const AdminPage = () => {
         </div>
       </div>
 
-      {/* Profiles List */}
+     
       <div
         style={{
           display: "flex",
