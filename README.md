@@ -43,8 +43,8 @@ This web-based **Profile Map Application** allows users to view a collection of 
 
 ## Preview
 ![Application Preview](preview1.png) 
-(preview2.png) 
-(preview3.png) 
+![Application Preview](preview2.png) 
+![Application Preview](preview3.png) 
 
 
 ## Author 
