@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"; // Import Link for navigation
 import "../styles/styles.css";
 
-import { profiles as initialProfiles } from "../mockData/profiles";
-
 const AdminPage = () => {
-  const [profiles, setProfiles] = useState(initialProfiles);
+  const [profiles, setProfiles] = useState([]);
   const [newProfile, setNewProfile] = useState({
     name: "",
     photo: "",
@@ -14,23 +12,63 @@ const AdminPage = () => {
   });
   const [successMessage, setSuccessMessage] = useState("");
 
-  const addProfile = () => {
+  // Fetch profiles from the server on component mount
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/profiles");
+        if (response.ok) {
+          const data = await response.json();
+          setProfiles(data);
+        } else {
+          alert("Failed to fetch profiles.");
+        }
+      } catch (error) {
+        console.error("Error fetching profiles:", error);
+        alert("Error connecting to the server.");
+      }
+    };
+    fetchProfiles();
+  }, []);
+
+  // Add new profile
+  const addProfile = async () => {
     if (!newProfile.name || !newProfile.photo || !newProfile.description) {
       alert("Please fill all the fields!");
       return;
     }
+
     const profileWithId = { ...newProfile, id: Date.now() };
-    setProfiles([...profiles, profileWithId]);
-    setNewProfile({ name: "", photo: "", description: "", address: { lat: 0, lng: 0 } });
-    setSuccessMessage("Profile added successfully!");
-    setTimeout(() => setSuccessMessage(""), 3000);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/profiles", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(profileWithId),
+      });
+
+      if (response.ok) {
+        const savedProfile = await response.json();
+        setProfiles([...profiles, savedProfile]);
+        setNewProfile({ name: "", photo: "", description: "", address: { lat: 0, lng: 0 } });
+        setSuccessMessage("Profile added successfully!");
+        setTimeout(() => setSuccessMessage(""), 3000);
+      } else {
+        alert("Failed to save the profile.");
+      }
+    } catch (error) {
+      console.error("Error adding profile:", error);
+      alert("Error connecting to the server.");
+    }
   };
 
-  const deleteProfile = (id) => {
+  // Delete profile
+  const deleteProfile = async (id) => {
     if (window.confirm("Are you sure you want to delete this profile?")) {
       setProfiles(profiles.filter((profile) => profile.id !== id));
       setSuccessMessage("Profile deleted successfully!");
       setTimeout(() => setSuccessMessage(""), 3000);
+      // Optionally, you can add an API call here to persist the deletion in the backend.
     }
   };
 
