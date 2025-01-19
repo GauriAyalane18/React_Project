@@ -1,0 +1,112 @@
+.profile-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  width: 200px;
+  text-align: center;
+  border-radius: 10px;
+  background: white;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.profile-card.active {
+  border: 2px solid #1976d2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.map-container {
+  margin-top: 20px;
+}
+
+.map-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.map-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+.map-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+.map-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
+/* General Light/Dark Mode Styles */
+body {
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.light-mode {
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.dark-mode {
+  background-color: #1e1e2e;
+  color: #f9f9f9;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #007bff;
+  color: white;
+}
+
+.nav-links button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-left: 1rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.nav-links button:hover {
+  text-decoration: underline;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 1.5rem;
+}
+
+/* Profile Cards */
+.profile-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+h3 {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+/* Map */
+.map-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
